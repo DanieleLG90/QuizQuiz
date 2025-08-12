@@ -8,10 +8,23 @@ import './App.css'
 function App() {
 
   const [quizStart, setQuizStart] = React.useState(false)
+  const [quizQuestions, setQuizQuestions] = React.useState([])
 
     function go() {
       setQuizStart(true)
     }
+
+    
+    React.useEffect (() =>{
+      fetch("https://opentdb.com/api.php?amount=6&type=multiple")
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          setQuizQuestions(data)
+    })
+    }, [])
+
+    
   
   return (
     <>

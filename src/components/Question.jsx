@@ -2,22 +2,32 @@ import React from "react"
 
 
 export default function(props){
-    /*
+    
     const [selectedAnswer, setSelectedAnswer] = React.useState(null)
 
     function handleClick(answerText){
         setSelectedAnswer(answerText)
     }
-     */
 
+    const answerElements = props.question.answers.map(answer =>{
+        const isSelected = selectedAnswer === answer.text 
+        const btnClass = isSelected? "answer-button selected" : "answer-button"
+
+        return(
+            <button
+            key={answer.id}
+            className={btnClass}
+            onClick={() => handleClick(answer.text)}>
+                {answer.text}
+            </button>
+        )
+    })
+     
     return(
-        <div>
-            <h3>Question</h3>
-            <div>
-                <p>answer1</p>
-                <p>answer2</p>
-                <p>answer3</p>
-                <p>answer4</p>
+        <div className="question-container">
+            <h3>{props.question.text}</h3>
+            <div className="answer-container">
+               {answerElements}
             </div>
         </div>
     )
