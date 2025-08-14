@@ -1,5 +1,5 @@
 import React from 'react'
-
+import he from 'he';
 import Intro from "./components/Intro"
 import Question from "./components/Question"
 
@@ -33,23 +33,26 @@ function App() {
           //console.log(data)
           //setQuizQuestions(data)
           const formattedQuestions = data.results.map(questionData => {
-            // unione di tutte le risposte, giueste e sbagliate
-            const allAnswers = [...questionData.incorrect_answers, questionData.correct_answer]
+            const decodedQuestionText = he.decode(questionData.question)
+            const allAnswers = [
+            ...questionData.incorrect_answers,
+            questionData.correct_answer
+          ];
             
-            // Funzione per mescolare l'array
             
-            // Mescola e mappa le risposte, aggiungendo un ID e `isSelected`
+            
             const formattedAnswers = shuffleArray(allAnswers).map(answer => ({
               id: new Date().getTime() + Math.random(),
-              text: answer,
+              text: he.decode(answer),
               isSelected: false,
             }))
 
-            // Restituisci un nuovo oggetto domanda che include i dati originali + le risposte formattate
+            
             return {
-              ...questionData, // Copia tutti i campi originali (es. `question`, `correct_answer`)
-              id: new Date().getTime() + Math.random(), // Aggiungi un ID unico alla domanda
-              all_answers: formattedAnswers, // Aggiungi il nuovo array di risposte
+              ...questionData, 
+              id: new Date().getTime() + Math.random(), 
+              question: decodedQuestionText,
+              all_answers: formattedAnswers,
             }
           })
           setQuizQuestions(formattedQuestions);
@@ -67,15 +70,15 @@ function App() {
     
   
   return (
-    <>
-     <h1>Quiz Quiz Game</h1>
+    <div className='main-container'>
+     
      {!quizStart?
      <Intro startQuiz={go} />: 
 
      <div>
       <h2>answer all the questions below: </h2>
       <div>
-          {questionElements}
+          
           {quizQuestions.length > 0 ? (
               questionElements
             ) : (
@@ -85,7 +88,7 @@ function App() {
      </div>
 
      }
-    </>
+    </div>
   )
 }
 
