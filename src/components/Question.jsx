@@ -9,7 +9,7 @@ export default function(props){
         setSelectedAnswer(answerText)
     }
 
-    const answerElements = props.question.answers.map(answer =>{
+    const answerElements = props.question.all_answers.map(answer =>{
         const isSelected = selectedAnswer === answer.text 
         const btnClass = isSelected? "answer-button selected" : "answer-button"
 
@@ -25,7 +25,7 @@ export default function(props){
      
     return(
         <div className="question-container">
-            <h3>{props.question.text}</h3>
+            <h3>{props.question.question}</h3>
             <div className="answer-container">
                {answerElements}
             </div>
