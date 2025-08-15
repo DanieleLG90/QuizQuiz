@@ -30,7 +30,7 @@ function App() {
       fetch("https://opentdb.com/api.php?amount=6&difficulty=easy&type=multiple")
         .then(res => res.json())
         .then(data => {
-          //console.log(data)
+          console.log(data)
           //setQuizQuestions(data)
           const formattedQuestions = data.results.map(questionData => {
             const decodedQuestionText = he.decode(questionData.question)
