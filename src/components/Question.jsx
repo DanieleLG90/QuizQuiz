@@ -26,7 +26,7 @@ export default function(props){
     return(
         <div className="question-container">
             <h3>{props.question.question}</h3>
-            <div className="answer-container">
+            <div className="answers-container">
                {answerElements}
             </div>
         </div>
