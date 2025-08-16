@@ -9,6 +9,7 @@ function App() {
 
   const [quizStart, setQuizStart] = React.useState(false)
   const [quizQuestions, setQuizQuestions] = React.useState([])
+  const [checkAnswersDisabled, setCheckAnswersDisabled] = React.useState(true);
 
     function go() {
       setQuizStart(true)
@@ -64,8 +65,40 @@ function App() {
     <Question 
       key={question.id}
       question={question}
+      handleSelectAnswer={handleSelectAnswer}
     />
   ));
+
+  function handleSelectAnswer(questionId, selectedAnswerText) {
+    setQuizQuestions(prevQuestions => {
+      // Mappiamo l'array di domande precedente
+      return prevQuestions.map(question => {
+        // Troviamo la domanda che corrisponde all'ID
+        if (question.id === questionId) {
+          // Aggiorniamo le risposte di quella domanda
+          const updatedAnswers = question.all_answers.map(answer => ({
+            ...answer,
+            // Se il testo della risposta corrisponde a quella selezionata, impostiamo isSelected a true
+            isSelected: answer.text === selectedAnswerText
+          }));
+          // Restituiamo la domanda aggiornata
+          return { ...question, all_answers: updatedAnswers };
+        }
+        // Se non è la domanda che ci interessa, la restituiamo invariata
+        return question;
+      });
+    });
+  }
+
+  React.useEffect(() => {
+  // `every()` controlla se tutti gli elementi soddisfano la condizione
+  const allAnswered = quizQuestions.every(question => {
+    // `some()` controlla se almeno un elemento soddisfa la condizione
+    return question.all_answers.some(answer => answer.isSelected);
+  });
+  // Se tutte le domande hanno una risposta, il pulsante non è disabilitato (quindi `!allAnswered` è `false`)
+  setCheckAnswersDisabled(!allAnswered);
+}, [quizQuestions]);
 
     
   
@@ -83,7 +116,13 @@ function App() {
             ) : (
               <p>Caricamento domande...</p>
             )}
-        
+        <button 
+          className={`check-answers-btn ${checkAnswersDisabled ? "disabled" : null}`} 
+          disabled={checkAnswersDisabled}
+          onClick={console.log("all answers selected")}
+        >
+            Check answers
+        </button>
      </div>
 
      }
