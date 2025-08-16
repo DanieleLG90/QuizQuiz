@@ -76,7 +76,7 @@ function App() {
      <Intro startQuiz={go} />: 
 
      <div className='quiz-container'>
-      <h2 className='quiz-title'>answer all the questions below: </h2>
+      <h2 className='quiz-title'>Answer all the questions below: </h2>
       
           {quizQuestions.length > 0 ? (
               questionElements
