@@ -38,3 +38,27 @@
   background-color: lightgrey;
   color: #4d5466;
 }
+
+.results-container{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.results-container p{
+  font-size: 18px;
+}
+
+.results-container button{
+  background-color: #4d5466;
+  color: white;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  padding: 1px 10px;
+  cursor: pointer;
+}
+
+.results-container button:hover{
+  background-color: #293264;
+}

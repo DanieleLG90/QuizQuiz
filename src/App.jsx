@@ -9,7 +9,12 @@ function App() {
 
   const [quizStart, setQuizStart] = React.useState(false)
   const [quizQuestions, setQuizQuestions] = React.useState([])
-  const [checkAnswersDisabled, setCheckAnswersDisabled] = React.useState(true);
+  const [checkAnswersDisabled, setCheckAnswersDisabled] = React.useState(true)
+
+  const [quizChecked, setQuizChecked] = React.useState(false)
+  const [score, setScore] = React.useState(0)
+
+  const [newGame, setNewGame] = React.useState(false)
 
     function go() {
       setQuizStart(true)
@@ -59,16 +64,17 @@ function App() {
           setQuizQuestions(formattedQuestions);
           console.log(quizQuestions)
         })
-    }, [])
-
+    }, [newGame])
+    // mapping per generare le domande
     const questionElements = quizQuestions.map(question => (
     <Question 
       key={question.id}
       question={question}
       handleSelectAnswer={handleSelectAnswer}
+      quizChecked={quizChecked}
     />
   ));
-
+  // function che controlla le risposte selezionate e modifica isSelected a true quando id corrisponde
   function handleSelectAnswer(questionId, selectedAnswerText) {
     setQuizQuestions(prevQuestions => {
       // Mappiamo l'array di domande precedente
@@ -99,8 +105,30 @@ function App() {
   // Se tutte le domande hanno una risposta, il pulsante non è disabilitato (quindi `!allAnswered` è `false`)
   setCheckAnswersDisabled(!allAnswered);
 }, [quizQuestions]);
+// funzione che controlla quante risposte sono corrette e restituisce un numero
+function checkAnswers() {
+  let correctCount = 0;
+  quizQuestions.forEach(question => {
+    const selectedAnswer = question.all_answers.find(answer => answer.isSelected);
+    if (selectedAnswer && selectedAnswer.text === question.correct_answer) {
+      correctCount++;
+    }
+  });
+  setScore(correctCount);
+  setQuizChecked(true);   
+}
+// function per iniziare una nuova partita
+function playAgain(){
 
-    
+  setQuizStart(false);
+
+  setQuizChecked(false);
+  
+  setScore(0);
+
+  setNewGame(prevGame => !prevGame)
+  
+}
   
   return (
     <div className='main-container'>
@@ -116,13 +144,27 @@ function App() {
             ) : (
               <p>Caricamento domande...</p>
             )}
-        <button 
-          className={`check-answers-btn ${checkAnswersDisabled ? "disabled" : null}`} 
-          disabled={checkAnswersDisabled}
-          onClick={console.log("all answers selected")}
-        >
-            Check answers
-        </button>
+        {!quizChecked ? (
+          <button 
+            className={`check-answers-btn ${checkAnswersDisabled ? "disabled" : null}`}
+            disabled={checkAnswersDisabled}
+            onClick={checkAnswers}
+          >
+            Controlla risposte
+          </button>
+        ) : (
+          <div className="results-container">
+            <p className="score-text">
+              Risposte corrette: {score}/{quizQuestions.length}
+            </p>
+            <button 
+              className="play-again-btn"
+              onClick={playAgain}
+            >
+              Gioca di nuovo
+            </button>
+          </div>
+        )}
      </div>
 
      }

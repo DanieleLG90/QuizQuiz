@@ -21,6 +21,7 @@ export default function(props){
                 key={answer.id}
                 className={btnClass}
                 onClick={() => handleAnswerClick(answer.text)}
+                disabled={props.quizChecked}
             >
                 {answer.text}
             </button>
