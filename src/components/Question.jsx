@@ -13,13 +13,19 @@ export default function(props){
     }
 
     const answerElements = props.question.all_answers.map(answer =>{
-         const isSelected = answer.isSelected; // Usiamo lo stato del genitore
-        const btnClass = isSelected? "answer-button selected" : "answer-button"
+        const isSelected = answer.isSelected; // Usiamo lo stato del genitore
+        const isCorrect = answer.isCorrect;
+        const isIncorrect = answer.isIncorrect;
+
+        let buttonClass = "answer-button";
+        if (isSelected) buttonClass += " selected";
+        if (isCorrect) buttonClass += " correct";
+        if (isIncorrect) buttonClass += " incorrect";
 
         return(
             <button
                 key={answer.id}
-                className={btnClass}
+                className={buttonClass}
                 onClick={() => handleAnswerClick(answer.text)}
                 disabled={props.quizChecked}
             >

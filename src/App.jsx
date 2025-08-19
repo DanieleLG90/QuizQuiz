@@ -105,16 +105,31 @@ function App() {
   // Se tutte le domande hanno una risposta, il pulsante non è disabilitato (quindi `!allAnswered` è `false`)
   setCheckAnswersDisabled(!allAnswered);
 }, [quizQuestions]);
+
 // funzione che controlla quante risposte sono corrette e restituisce un numero
 function checkAnswers() {
   let correctCount = 0;
-  quizQuestions.forEach(question => {
+  const updatedQuestions = quizQuestions.map(question => {
     const selectedAnswer = question.all_answers.find(answer => answer.isSelected);
     if (selectedAnswer && selectedAnswer.text === question.correct_answer) {
       correctCount++;
     }
+
+    const newAnswers = question.all_answers.map(answer => {
+      const isCorrect = answer.text === question.correct_answer;
+      const isIncorrect = answer.text === selectedAnswer?.text && !isCorrect;
+      
+      return {
+        ...answer,
+        isCorrect: isCorrect,
+        isIncorrect: isIncorrect
+      };
+    });
+    
+    return { ...question, all_answers: newAnswers };
   });
   setScore(correctCount);
+  setQuizQuestions(updatedQuestions);
   setQuizChecked(true);   
 }
 // function per iniziare una nuova partita
@@ -136,7 +151,7 @@ function playAgain(){
      {!quizStart?
      <Intro startQuiz={go} />: 
 
-     <div className='quiz-container'>
+     <div className={quizChecked ? 'quiz-container quiz-checked' : 'quiz-container'}>
       <h2 className='quiz-title'>Answer all the questions below: </h2>
       
           {quizQuestions.length > 0 ? (
