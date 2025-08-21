@@ -6,13 +6,15 @@
 }
 
 .intro-container h1 {
-  font-size: 2.5rem;
+  font-family: 'Lilita One', sans-serif;
+  font-size: 3rem;
   color: #293264;
   margin-bottom: 10px;
   text-align: center;
 }
 
-.intro-container h2 {
+.intro-container p {
+  font-family: 'Lilita One', sans-serif;
   font-size: 1.2rem;
   color: #4d5466;
   text-align: center;
