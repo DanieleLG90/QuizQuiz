@@ -41,24 +41,18 @@
 .answer-button.correct {
   background-color: #94D7A2; /* Verde per la risposta corretta */
   color: #293264;
-  border-color: #94D7A2;
+  border-color: #36A479;
 }
 
 /* Stile per la risposta sbagliata selezionata */
 .answer-button.incorrect {
   background-color: #F8D1D1; /* Rosso per la risposta sbagliata */
   color: #6a0000;
-  border-color: #F8D1D1;
+  border-color: #C04242;
 }
 
-/* Regola per l'opacità quando il quiz è controllato */
-.answer-button.correct:not(.selected),
-.answer-button.correct.selected {
-  /* Stile per la risposta giusta (anche se non selezionata dall'utente) */
-  background-color: #94D7A2;
-  color: #293264;
-  border-color: #94D7A2;
-  opacity: 1; /* Assicura che la giusta non sbiadisca */
+.quiz-checked .answer-button.correct {
+    opacity: 1;
 }
 
 /* Stili per le risposte non selezionate dopo il controllo */

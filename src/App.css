@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 
 
@@ -61,4 +62,30 @@
 
 .results-container button:hover{
   background-color: #293264;
+}
+
+
+@media (max-width: 600px) {
+
+  .main-container {
+    width: 90%;
+    padding: 20px;
+    min-height: auto; 
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+      font-size: 1rem;
+  }
+
+  .intro-container button,
+  .check-answers-btn,
+  .play-again-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
 }

@@ -1,7 +1,8 @@
 import React from 'react'
-import he from 'he';
+import he from 'he'
 import Intro from "./components/Intro"
 import Question from "./components/Question"
+import ParticlesBack from "./components/ParticlesBack"
 
 import './App.css'
 
@@ -144,10 +145,11 @@ function playAgain(){
   setNewGame(prevGame => !prevGame)
   
 }
-  
+
   return (
+
     <div className='main-container'>
-     
+       
      {!quizStart?
      <Intro startQuiz={go} />: 
 
@@ -185,6 +187,7 @@ function playAgain(){
      }
     </div>
   )
+  
 }
 
 export default App
