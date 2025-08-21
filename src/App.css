@@ -4,7 +4,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 40px;
   margin: 5px 0;
-  width: 600px; 
+  width: 600px;
   min-height: 400px;
   display: flex;
   justify-content: center;
@@ -102,8 +102,9 @@
 
   .main-container {
     width: 90%;
-    padding: 20px;
-    min-height: auto; 
+    padding: 10px;
+    min-height: auto;
+    margin: auto;
   }
 
   h1 {
