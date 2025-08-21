@@ -17,6 +17,8 @@ function App() {
 
   const [newGame, setNewGame] = React.useState(false)
 
+  const [error, setError] = React.useState(null);
+
     function go() {
       setQuizStart(true)
     }
@@ -32,21 +34,22 @@ function App() {
               return array
             }
 
-    
+    //"https://opentdb.com/api.php?amount=6&difficulty=easy&type=multiple"
     React.useEffect (() =>{
       fetch("https://opentdb.com/api.php?amount=6&difficulty=easy&type=multiple")
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok')
+            }
+            return res.json();
+        })
         .then(data => {
-          console.log(data)
-          //setQuizQuestions(data)
           const formattedQuestions = data.results.map(questionData => {
             const decodedQuestionText = he.decode(questionData.question)
             const allAnswers = [
-            ...questionData.incorrect_answers,
-            questionData.correct_answer
-          ];
-            
-            
+              ...questionData.incorrect_answers,
+              questionData.correct_answer
+            ];
             
             const formattedAnswers = shuffleArray(allAnswers).map(answer => ({
               id: new Date().getTime() + Math.random(),
@@ -54,7 +57,6 @@ function App() {
               isSelected: false,
             }))
 
-            
             return {
               ...questionData, 
               id: new Date().getTime() + Math.random(), 
@@ -63,8 +65,11 @@ function App() {
             }
           })
           setQuizQuestions(formattedQuestions);
-          console.log(quizQuestions)
         })
+        .catch(error => {
+            setError(error.message);
+            console.error('There was a problem with the fetch operation:', error);
+        });
     }, [newGame])
     // mapping per generare le domande
     const questionElements = quizQuestions.map(question => (
@@ -98,63 +103,72 @@ function App() {
   }
 
   React.useEffect(() => {
-  // `every()` controlla se tutti gli elementi soddisfano la condizione
-  const allAnswered = quizQuestions.every(question => {
-    // `some()` controlla se almeno un elemento soddisfa la condizione
-    return question.all_answers.some(answer => answer.isSelected);
-  });
-  // Se tutte le domande hanno una risposta, il pulsante non è disabilitato (quindi `!allAnswered` è `false`)
-  setCheckAnswersDisabled(!allAnswered);
-}, [quizQuestions]);
-
-// funzione che controlla quante risposte sono corrette e restituisce un numero
-function checkAnswers() {
-  let correctCount = 0;
-  const updatedQuestions = quizQuestions.map(question => {
-    const selectedAnswer = question.all_answers.find(answer => answer.isSelected);
-    if (selectedAnswer && selectedAnswer.text === question.correct_answer) {
-      correctCount++;
-    }
-
-    const newAnswers = question.all_answers.map(answer => {
-      const isCorrect = answer.text === question.correct_answer;
-      const isIncorrect = answer.text === selectedAnswer?.text && !isCorrect;
-      
-      return {
-        ...answer,
-        isCorrect: isCorrect,
-        isIncorrect: isIncorrect
-      };
+    // `every()` controlla se tutti gli elementi soddisfano la condizione
+    const allAnswered = quizQuestions.every(question => {
+      // `some()` controlla se almeno un elemento soddisfa la condizione
+      return question.all_answers.some(answer => answer.isSelected);
     });
+    // Se tutte le domande hanno una risposta, il pulsante non è disabilitato (quindi `!allAnswered` è `false`)
+    setCheckAnswersDisabled(!allAnswered);
+  }, [quizQuestions]);
+
+  // funzione che controlla quante risposte sono corrette e restituisce un numero
+  function checkAnswers() {
+    let correctCount = 0;
+    const updatedQuestions = quizQuestions.map(question => {
+      const selectedAnswer = question.all_answers.find(answer => answer.isSelected);
+      if (selectedAnswer && selectedAnswer.text === question.correct_answer) {
+        correctCount++;
+      }
+
+      const newAnswers = question.all_answers.map(answer => {
+        const isCorrect = answer.text === question.correct_answer;
+        const isIncorrect = answer.text === selectedAnswer?.text && !isCorrect;
+        
+        return {
+          ...answer,
+          isCorrect: isCorrect,
+          isIncorrect: isIncorrect
+        };
+      });
+      
+      return { ...question, all_answers: newAnswers };
+    });
+    setScore(correctCount);
+    setQuizQuestions(updatedQuestions);
+    setQuizChecked(true);   
+  }
+  // function per iniziare una nuova partita
+  function playAgain(){
+
+    setQuizStart(false);
+
+    setQuizChecked(false);
     
-    return { ...question, all_answers: newAnswers };
-  });
-  setScore(correctCount);
-  setQuizQuestions(updatedQuestions);
-  setQuizChecked(true);   
-}
-// function per iniziare una nuova partita
-function playAgain(){
+    setScore(0);
 
-  setQuizStart(false);
-
-  setQuizChecked(false);
-  
-  setScore(0);
-
-  setNewGame(prevGame => !prevGame)
-  
-}
+    setNewGame(prevGame => !prevGame)
+    
+  }
 
   return (
-
     <div className='main-container'>
        
      {!quizStart?
      <Intro startQuiz={go} />: 
 
      <div className={quizChecked ? 'quiz-container quiz-checked' : 'quiz-container'}>
-      <h2 className='quiz-title'>Answer all the questions below: </h2>
+      {error ? (
+          <div className="error-message">
+            <p>Oops! We couldn't load questions.</p>
+            <p>Please try again later.</p>
+            <button className="play-again-btn" onClick={() => window.location.reload()}>
+              Reload
+            </button>
+          </div>
+        ) : (
+          <>
+        <h2 className='quiz-title'>Answer all the questions below: </h2>
       
           {quizQuestions.length > 0 ? (
               questionElements
@@ -182,6 +196,8 @@ function playAgain(){
             </button>
           </div>
         )}
+        </>
+      )}
      </div>
 
      }

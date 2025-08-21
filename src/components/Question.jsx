@@ -8,10 +8,6 @@ export default function(props){
         props.handleSelectAnswer(props.question.id, answerText);
     }
 
-    function handleClick(answerText){
-        setSelectedAnswer(answerText)
-    }
-
     const answerElements = props.question.all_answers.map(answer =>{
         const isSelected = answer.isSelected; // Usiamo lo stato del genitore
         const isCorrect = answer.isCorrect;

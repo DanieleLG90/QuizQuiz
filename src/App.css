@@ -72,6 +72,29 @@
   background-color: #293264;
 }
 
+.error-message{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-message .play-again-btn{
+    background-color: #4d5466;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.error-message .play-again-btn:hover{
+  background-color: #293264;
+}
+
 
 @media (max-width: 600px) {
 
