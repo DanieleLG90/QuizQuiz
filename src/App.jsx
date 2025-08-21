@@ -167,7 +167,7 @@ function playAgain(){
             disabled={checkAnswersDisabled}
             onClick={checkAnswers}
           >
-            Controlla risposte
+            Check Answers
           </button>
         ) : (
           <div className="results-container">
@@ -178,7 +178,7 @@ function playAgain(){
               className="play-again-btn"
               onClick={playAgain}
             >
-              Gioca di nuovo
+              Play Again
             </button>
           </div>
         )}
