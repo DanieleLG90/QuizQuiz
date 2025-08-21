@@ -3,12 +3,14 @@
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 40px;
+  margin: 5px 0;
   width: 600px; 
   min-height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2;
+  border: 4px solid #293264;
 }
 
 
@@ -38,6 +40,12 @@
 .disabled{
   background-color: lightgrey;
   color: #4d5466;
+  cursor: default;
+}
+
+.check-answers-btn:not([disabled]):hover {
+  background-color: #293264;
+  cursor: pointer;
 }
 
 .results-container{

@@ -37,16 +37,14 @@
   background-color: #f0f3fa;
 }
 
-/* Stile per la risposta giusta */
 .answer-button.correct {
-  background-color: #94D7A2; /* Verde per la risposta corretta */
+  background-color: #94D7A2;
   color: #293264;
   border-color: #36A479;
 }
 
-/* Stile per la risposta sbagliata selezionata */
 .answer-button.incorrect {
-  background-color: #F8D1D1; /* Rosso per la risposta sbagliata */
+  background-color: #F8D1D1; 
   color: #6a0000;
   border-color: #C04242;
 }
@@ -55,7 +53,11 @@
     opacity: 1;
 }
 
-/* Stili per le risposte non selezionate dopo il controllo */
+.quiz-checked .answer-button.correct:hover {
+  background-color: #94D7A2;
+  border-color: #36A479;
+}
+
 .quiz-checked .answer-button:not(.selected):not(.correct):not(.incorrect) {
   opacity: 0.5;
 }
