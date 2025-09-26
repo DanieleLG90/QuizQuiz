@@ -2,7 +2,6 @@ import React from 'react'
 import he from 'he'
 import Intro from "./components/Intro"
 import Question from "./components/Question"
-import ParticlesBack from "./components/ParticlesBack"
 
 import './App.css'
 
